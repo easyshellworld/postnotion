@@ -39,22 +39,24 @@ let getlittledata=(klinedata)=>{
 }
 const config = {
     headers:{
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'
     }
   };
 
 axios
-.get(gettoday('btc'),config)
+.get(gettoday('eth'),config)
 /* .BASE_URL: '/api'
 .headers: {()
   'Content-Type': 'application/json; charset=utf-8'
   } */
 .then(response => {
-  //let kdata = getlittledata(response.data.data.kline)
+  let kdata = getlittledata(response.data.data.kline)
   console.log(gettoday('btc'))
-  console.log(response.data)
+  console.log(kdata)
  
 })
 .catch(function (error) { // 请求失败处理
   console.log(error);
 });
+
