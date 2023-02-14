@@ -37,7 +37,10 @@ let getlittledata=(klinedata)=>{
     }
     return arr
 }
-const config = {
+
+function getcoindata(coinname){
+  return new Promise((resolve, reject) =>{
+  const config = {
     headers:{
         'Content-Type': 'application/json; charset=utf-8',
         'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'
@@ -45,18 +48,68 @@ const config = {
   };
 
 axios
-.get(gettoday('eth'),config)
-/* .BASE_URL: '/api'
-.headers: {()
-  'Content-Type': 'application/json; charset=utf-8'
-  } */
+.get(gettoday(coinname),config)
 .then(response => {
   let kdata = getlittledata(response.data.data.kline)
-  console.log(gettoday('btc'))
-  console.log(kdata)
- 
+  //console.log(gettoday('btc'))
+
+  //console.log(kdata)
+  resolve(kdata)
 })
 .catch(function (error) { // 请求失败处理
   console.log(error);
+  reject(error)
 });
+})
+}
+
+function postdata(url,updata){
+  return new Promise((resolve, reject) =>{
+  const config = {
+    headers:{
+      "Authorization": "Bearer"+'secret',
+      "accept": "application/json",
+      "Notion-Version": "2022-06-28",
+      "content-type": "application/json"
+  }
+}
+
+axios
+.post(url,config,updata)
+.then(response => {
+  
+  //console.log(gettoday('btc'))
+
+  //console.log(kdata)
+  resolve(response)
+})
+.catch(function (error) { // 请求失败处理
+  console.log(error);
+  reject(error)
+});
+})
+}
+
+
+
+
+async function test(){
+/* let testdata=await getcoindata('eth')
+console.log(testdata)
+testdata=await getcoindata('btc')
+console.log(testdata) */
+let querydata= {
+  /*  "property": "time",
+  "contains": "20230211"  */
+  /* "page_size":100 */
+}
+let backdata=await postdata("https://api.notion.com/v1/databases/{}/query",querydata)
+console.log(backdata)
+
+}
+
+
+
+// 
+test()
 
